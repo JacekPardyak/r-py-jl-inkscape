@@ -9,13 +9,13 @@ Strictly R and Inkscape must be installed on the platform.
 
 1. Make sure the `PATH` to` Rscript` is set in the Environment Variables of your system.
 
-2. Files :
+2. Files from `extensions` folder of this repository:
 
 - `r_import.py` 
 
 - `r_import.inx`
 
-must be in the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions`: in Inkscape.
+must be copied to the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions:` in Inkscape.
 
 # Rscripts
 
@@ -49,7 +49,9 @@ When using `Import` a popup will show:
 
 # Examples
 
-In the `tests` folder you can find `iris.R` script with following content: 
+## Iris
+
+In the `examples` folder you can find `iris.R` script with following content: 
 
 ```
 #!/usr/bin/env Rscript
@@ -71,6 +73,8 @@ ggsave(filename = args[1] , plot = plot)
 after import you should see in Inkscape:
 
 ![](images/Capture-iris.PNG)
+
+## Rose
 
 Another example, script `rose.R`:
 
@@ -112,6 +116,8 @@ after open you should see in Inkscape:
 
 The rose curve is well described at https://en.wikipedia.org/wiki/Rose_(mathematics) and using 'SIMPLE FEATURES' to build them is a bit extravagant. Truth :)
 
+## Tulip
+
 The last example from script `tulip.R` :
 
 ```
@@ -134,6 +140,60 @@ ggsave(filename = args[1] , plot = plot)
 ```
 
 ![](images/Capture-tulip.PNG)
+
+## Flowers
+
+This is rather advanced example, consider reading https://www.tidytextmining.com/ before giving up. Shortly, we read data from github, count words in flower names and plot most frequent 200 tokens so that more frequent tokens have bigger font size. Note that here I'm not specifying plot name, `ggsave` takes `last_plot()`.
+
+```
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly = TRUE)
+# Your code starts here
+
+if (!require("ggwordcloud"))
+  install.packages("ggwordcloud")
+if (!require("tidytext"))
+  install.packages("tidytext")
+
+library(tidyverse) # general meta package
+library(ggwordcloud) # for world cloud
+library(tidytext) # for NLP
+"https://gist.githubusercontent.com/researchranks/ffe24c33df30e64f51271ddec83b4af6/raw/0e15dabe9b54611288cf92f93e1bfa288e150448/flower-and-plant-names.csv" %>%
+  read_csv(col_names = FALSE) %>%
+  mutate(linenumber = row_number()) %>%
+  unnest_tokens(word, X1)  %>%
+  count(word, sort = T) %>%
+  top_n(200) %>%
+  ggplot() +
+  geom_text_wordcloud_area(aes(label = word, size = n)) +
+  scale_size_area(max_size = 15)
+
+# Your code ends here
+ggsave(filename = args[1])
+
+```
+![](images/Capture-flowers.PNG)
+
+## Tree
+
+This code comes from https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html and shows that `ggraph` library also gives beautiful result in Inkscape.
+
+
+
+# Extra
+
+
+
+# Notes
+
+- `ggsave` saves a ggplot (or other grid object) with sensible defaults so that can be used to produce SVG
+
+- method `plot()` doesn't work
+
+- R working directory is extensions directory. To read data from file you need to specify full path or change working directory with `setwd()`
+
+
+
 
 # References
 
