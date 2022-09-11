@@ -24,7 +24,7 @@ Description of this extension
 import inkex
 from inkex import command
 
-class RscriptVisualizer(inkex.CallExtension):
+class RScriptPlot(inkex.CallExtension):
 
     input_ext = 'R'
     output_ext = 'svg'
@@ -33,4 +33,4 @@ class RscriptVisualizer(inkex.CallExtension):
         command.call('Rscript', input_file, output_file)
 
 if __name__ == '__main__':
-    RscriptVisualizer().run()
+    RScriptPlot().run()
