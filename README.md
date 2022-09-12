@@ -17,6 +17,8 @@ Strictly R and Inkscape must be installed on the platform.
 
 must be copied to the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions:` in Inkscape.
 
+3. Make sure R packages from examples are installed
+
 # Rscripts
 
 In order for the script to run correctly, it must meet the following convention:
@@ -193,7 +195,7 @@ This code comes from https://r-graph-gallery.com/334-basic-dendrogram-with-ggrap
 - R working directory is extensions directory. To read data from file you need to specify full path or change working directory with `setwd()`
 
 
-
+- when using `reticulate` don't override `r` variable reserved for R environment
 
 # References
 

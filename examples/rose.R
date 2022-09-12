@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
 # Your code starts here
 library(tidyverse)
 library(sf)
@@ -25,4 +24,4 @@ plot <- tibble(p = 3, q = 5) %>%
   geom_sf()
 
 # Your code ends here
-ggsave(filename = args[1] , plot = plot)
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])

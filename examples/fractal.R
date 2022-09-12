@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
 # Your code starts here
 
 # libraries
@@ -39,4 +38,4 @@ h_fractal %>% ggplot() +
   theme_void() 
 
 # Your code ends here
-ggsave(filename = args[1])
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])

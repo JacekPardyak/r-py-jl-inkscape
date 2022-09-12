@@ -1,6 +1,11 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)[1]
+file = commandArgs(trailingOnly = TRUE)[1]
+library(reticulate)
+Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')
+Sys.getenv("RETICULATE_MINICONDA_PATH")
 reticulate::repl_python()
+#%pip install matplotlib
+
 # your python code starts here
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,5 +22,5 @@ output = ax.set(xlabel='time (s)', ylabel='voltage (mV)',
 ax.grid()
 
 # your python code ends here
-fig.savefig(r.args, format='svg', dpi=1200)
+fig.savefig(r.file, format='svg', dpi=1200)
 exit

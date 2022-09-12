@@ -1,9 +1,8 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
 # Your code starts here
 library(tidyverse)
 
-plot <- iris %>%
+iris %>%
   ggplot() +
   aes(x = Petal.Length,
       y = Petal.Width,
@@ -11,4 +10,4 @@ plot <- iris %>%
   geom_point()
 
 # Your code ends here
-ggsave(filename = args[1] , plot = plot)
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])

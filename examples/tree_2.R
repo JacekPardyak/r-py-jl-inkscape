@@ -5,10 +5,10 @@ if(! require("tidygraph") ) install.packages("tidygraph")
 library(tidygraph)
 library(ggraph)
 
-create_tree(n = 100, children = 3) %>% 
-  ggraph(layout = 'dendrogram', circular = TRUE) + 
-  geom_edge_diagonal() + 
-  geom_node_point()
+dendrogram <- hclust(dist(iris[, 1:4]))
+ggraph(dendrogram, 'dendrogram', circular = TRUE) + 
+  geom_edge_elbow() + 
+  coord_fixed()
 
 # Your code ends here
 ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
