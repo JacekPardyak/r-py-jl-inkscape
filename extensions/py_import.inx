@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+    <name>py_import</name>
+    <id>org.inkscape.input.py</id>
+    <dependency type="executable" location="path">python</dependency>
+    <input>
+        <extension>.py</extension>
+        <mimetype>text/plain</mimetype>
+        <filetypename>Python(*.py)</filetypename>
+        <filetypetooltip>Python</filetypetooltip>  
+    </input>
+    <script>
+        <command location="inx" interpreter="python">py_import_windows.py</command>
+    </script>
+</inkscape-extension>
