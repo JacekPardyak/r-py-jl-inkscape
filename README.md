@@ -1,9 +1,11 @@
-# impoRt
-impoRt is an Inkscape extension for executing R scripts from Inkscape to represent the resulting R plot inside the Inkscape canvas.
+# R & Python Import Extensions for Inkscape
+
+Inkscape extensions for executing R/Py scripts from Inkscape to represent the resulting R/Py plot inside the Inkscape canvas.
 
 # Requirements
 
-Strictly R and Inkscape must be installed on the platform. 
+R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely you have your own executable which need to specified in extension file `py_import_windows.py`.
+I'm using `reticulate` 
 
 # Extension set up
 
@@ -11,29 +13,63 @@ Strictly R and Inkscape must be installed on the platform.
 
 2. Files from `extensions` folder of this repository:
 
-- `r_import.py` 
-
 - `r_import.inx`
 
-must be copied to the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions:` in Inkscape.
+- `r_import.py` 
 
-3. Make sure R packages from examples are installed
+- `py_import.inx`
 
-# Rscripts
+- `py_import_linux.py` or `py_import_windows.py`
+
+should be copied to the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions:` in Inkscape.
+
+3. Make sure R or Python packages from examples are installed 
+
+# R scripts
 
 In order for the script to run correctly, it must meet the following convention:
 
 ```
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
-# Your code starts here
-....................
-# Your code ends here
-ggsave(filename = args[1] , plot = ...)
+
+<-- Your code goes here -->
+
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
 
 ```
 
-in place of dots you can type whatever you want.
+# Python scripts
+
+In order for the script to run correctly, it must meet the following convention:
+
+```
+#!/usr/bin/env python
+
+<-- Your code goes here -->
+
+fig.savefig(sys.argv[1], format='svg', dpi=1200)
+
+```
+
+# R scripts containing Python scipts
+
+In order for the R script to run correctly, it must meet the following convention:
+
+```
+#!/usr/bin/env Rscript
+file = commandArgs(trailingOnly = TRUE)[1]
+library(reticulate)
+Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')
+reticulate::repl_python()
+
+<-- Your Python code goes here -->
+
+ax.set(aspect=1)
+# your python code ends here
+fig.savefig(r.file, format='svg', dpi=1200)
+exit
+
+```
 
 # Why does it work?
 
@@ -49,6 +85,8 @@ When using `Import` a popup will show:
 
 ![](images/Capture-import.PNG)
 
+The same logic applies to running Python scripts.
+
 # Examples
 
 ## Iris
@@ -57,11 +95,10 @@ In the `examples` folder you can find `iris.R` script with following content:
 
 ```
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
 # Your code starts here
 library(tidyverse)
 
-plot <- iris %>%
+iris %>%
   ggplot() +
   aes(x = Petal.Length,
       y = Petal.Width,
@@ -69,7 +106,8 @@ plot <- iris %>%
   geom_point()
 
 # Your code ends here
-ggsave(filename = args[1] , plot = plot)
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
+
 ```
 
 after import you should see in Inkscape:
@@ -82,7 +120,6 @@ Another example, script `rose.R`:
 
 ```
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
 # Your code starts here
 library(tidyverse)
 library(sf)
@@ -101,14 +138,14 @@ st_rose = function(x) {
     st_multilinestring() %>%
     st_sfc()}
 
-plot <- tibble(p = 3, q = 5) %>% 
+tibble(p = 3, q = 5) %>% 
   mutate(n = ifelse((p * q) %% 2 == 0, 2 * q, 1 * q)) %>%
   st_rose() %>%
   ggplot() +
   geom_sf()
 
 # Your code ends here
-ggsave(filename = args[1] , plot = plot)
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
 
 ```
 
@@ -116,7 +153,7 @@ after open you should see in Inkscape:
 
 ![](images/Capture-rose.PNG)
 
-The rose curve is well described at https://en.wikipedia.org/wiki/Rose_(mathematics) and using 'SIMPLE FEATURES' to build them is a bit extravagant. Truth :)
+The rose curve is well described at https://en.wikipedia.org/wiki/Rose_(mathematics). Using 'SIMPLE FEATURES' to build them is a bit extravagant. Truth :)
 
 ## Tulip
 
@@ -176,11 +213,66 @@ ggsave(filename = args[1])
 ```
 ![](images/Capture-flowers.PNG)
 
-## Tree
+## Snowflake
 
-This code comes from https://r-graph-gallery.com/334-basic-dendrogram-with-ggraph.html and shows that `ggraph` library also gives beautiful result in Inkscape.
+Example from script `koch.py` showing `matplotlib` in action.
 
 
+```
+
+#!/usr/bin/env python
+import sys
+# start of your script
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def koch_snowflake(order, scale=10):
+    """
+    Return two lists x, y of point coordinates of the Koch snowflake.
+
+    Parameters
+    ----------
+    order : int
+        The recursion depth.
+    scale : float
+        The extent of the snowflake (edge length of the base triangle).
+    """
+    def _koch_snowflake_complex(order):
+        if order == 0:
+            # initial triangle
+            angles = np.array([0, 120, 240]) + 90
+            return scale / np.sqrt(3) * np.exp(np.deg2rad(angles) * 1j)
+        else:
+            ZR = 0.5 - 0.5j * np.sqrt(3) / 3
+
+            p1 = _koch_snowflake_complex(order - 1)  # start points
+            p2 = np.roll(p1, shift=-1)  # end points
+            dp = p2 - p1  # connection vectors
+
+            new_points = np.empty(len(p1) * 4, dtype=np.complex128)
+            new_points[::4] = p1
+            new_points[1::4] = p1 + dp / 3
+            new_points[2::4] = p1 + dp * ZR
+            new_points[3::4] = p1 + dp / 3 * 2
+            return new_points
+
+    points = _koch_snowflake_complex(order)
+    x, y = points.real, points.imag
+    return x, y
+
+x, y = koch_snowflake(order=5)
+
+fig = plt.figure(figsize=(8, 8))
+plt.axis('equal')
+plt.fill(x, y)
+
+
+# end of your script
+fig.savefig(sys.argv[1], format='svg', dpi=1200)
+
+```
 
 # Extra
 
@@ -190,12 +282,15 @@ This code comes from https://r-graph-gallery.com/334-basic-dendrogram-with-ggrap
 
 - `ggsave` saves a ggplot (or other grid object) with sensible defaults so that can be used to produce SVG
 
-- method `plot()` doesn't work
+- method `plot()` in R doesn't work
 
 - R working directory is extensions directory. To read data from file you need to specify full path or change working directory with `setwd()`
 
+- `matplotlib.pyplot.savefig` saves the current figure.
 
 - when using `reticulate` don't override `r` variable reserved for R environment
+
+- when using `reticulate` you might need to specify `RETICULATE_MINICONDA_PATH` like `Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')`
 
 # References
 

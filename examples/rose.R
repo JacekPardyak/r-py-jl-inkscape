@@ -17,7 +17,7 @@ st_rose = function(x) {
     st_multilinestring() %>%
     st_sfc()}
 
-plot <- tibble(p = 3, q = 5) %>% 
+tibble(p = 3, q = 5) %>% 
   mutate(n = ifelse((p * q) %% 2 == 0, 2 * q, 1 * q)) %>%
   st_rose() %>%
   ggplot() +

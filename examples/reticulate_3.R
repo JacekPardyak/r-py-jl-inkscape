@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 file = commandArgs(trailingOnly = TRUE)[1]
 library(reticulate)
-Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')
-Sys.getenv("RETICULATE_MINICONDA_PATH")
+#Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')
+#Sys.getenv("RETICULATE_MINICONDA_PATH")
 reticulate::repl_python()
 #%pip install matplotlib
 
