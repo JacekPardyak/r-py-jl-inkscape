@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-args = commandArgs(trailingOnly = TRUE)
 # Your code starts here
 
 if (!require("ggwordcloud"))
@@ -21,4 +20,4 @@ library(tidytext) # for NLP
   scale_size_area(max_size = 15)
 
 # Your code ends here
-ggsave(filename = args[1])
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
