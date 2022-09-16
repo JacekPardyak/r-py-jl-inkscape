@@ -329,23 +329,53 @@ fig.savefig(sys.argv[1], format='svg', dpi=1200)
 
 ```
 
-# Extra
+![](images/Capture-snowflake.PNG)
 
+# Ellipse
 
+This `Python` example comes from https://matplotlib.org/stable/gallery/shapes_and_collections/ellipse_demo.html 
+
+```
+#!/usr/bin/env python
+import sys
+# start of your script
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Ellipse
+np.random.seed(19680801)
+NUM = 250
+ells = [Ellipse(xy=np.random.rand(2) * 10,
+                width=np.random.rand(), height=np.random.rand(),
+                angle=np.random.rand() * 360)
+        for i in range(NUM)]
+
+fig, ax = plt.subplots(subplot_kw={'aspect': 'equal'})
+for e in ells:
+    ax.add_artist(e)
+    e.set_clip_box(ax.bbox)
+    e.set_alpha(np.random.rand())
+    e.set_facecolor(np.random.rand(3))
+ax.set_xlim(0, 10)
+ax.set_ylim(0, 10)
+# end of your script
+fig.savefig(sys.argv[1], format='svg', dpi=1200)
+
+```
+![](images/Capture.PNG)
 
 # Notes
 
-- `ggsave` saves a ggplot (or other grid object) with sensible defaults so that can be used to produce SVG
+- `ggsave` saves a ggplot (or other grid object) with sensible defaults as SVG
 
-- method `plot()` in R doesn't work
+- method `plot()` in `R` doesn't work
 
-- R working directory is extensions directory. To read data from file you need to specify full path or change working directory with `setwd()`
+- `R` working directory is extensions directory. To read data from file you need to specify full path or change working directory with `setwd()`
 
-- `matplotlib.pyplot.savefig` saves the current figure.
+- `matplotlib.pyplot.savefig` saves the current figure as SVG
 
-- when using `reticulate` don't override `r` variable reserved for R environment
+- when using `reticulate` don't override `r` variable reserved for `R` environment
 
-- when using `reticulate` you might need to specify `RETICULATE_MINICONDA_PATH` like `Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')`
+- when using `reticulate` you might need to specify `RETICULATE_MINICONDA_PATH` like this `Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')`
 
 # References
 
