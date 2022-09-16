@@ -2,9 +2,11 @@
 
 Inkscape extensions for executing R/Py scripts from Inkscape to represent the resulting R/Py plot inside the Inkscape canvas.
 
+These extensions offer many more possibilities compared to the existing e.g. `Extensions`>` Render`> `Function Plotter`. You can use your own data, libraries, functions, ... whatever fits into an R or Python script. You can even blend the two languages. 
+
 # Requirements
 
-R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely you have your own executable which need to specified in extension file `py_import_windows.py`.
+R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely you have your own executable which need to specified
 I'm using `reticulate` 
 
 # Extension set up
@@ -19,11 +21,39 @@ I'm using `reticulate`
 
 - `py_import.inx`
 
-- `py_import_linux.py` or `py_import_windows.py`
+- `py_import.py`
 
 should be copied to the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions:` in Inkscape.
 
-3. Make sure R or Python packages from examples are installed 
+3. Make sure `R` or `Python` packages from examples are installed 
+
+4. When using `Python` it's very likely that in the extension file `py_import.py` you need to specify right system command responsible for executing `Python` script.
+
+In place of 
+
+```
+...
+       command.call('python', input_file, output_file)
+...       
+```
+
+in Linux you might need to put:
+
+```
+...
+       command.call('python3', input_file, output_file)
+...       
+```
+
+or in Windows:
+
+```
+...
+        command.call('C:\\Users\\jacek\\AppData\\Local\\R-MINI~1\\envs\\r-reticulate\\python.exe', input_file, output_file)
+
+...
+
+```
 
 # R scripts
 
@@ -53,7 +83,7 @@ fig.savefig(sys.argv[1], format='svg', dpi=1200)
 
 # R scripts containing Python scipts
 
-In order for the R script to run correctly, it must meet the following convention:
+In order for the R script containing Python code to run correctly, it must meet the following convention:
 
 ```
 #!/usr/bin/env Rscript
@@ -71,6 +101,30 @@ exit
 
 ```
 
+To learn more check the `examples`.
+
+# Python scripts containing R scipts
+
+In order for the Python script containing R code to run correctly, it must meet the following convention:
+
+```
+#!/usr/bin/env python
+import sys
+import rpy2.robjects as robjects
+
+robjects.r('''
+<-- Your R code goes here -->
+ggsave(x)
+    }
+''')
+
+plot_and_save_r = robjects.globalenv['plot_and_save']
+plot_and_save_r(sys.argv[1])
+
+```
+
+To learn more check the `examples`.
+
 # Why does it work?
 
 After importing (or opening) R script with Inkscape: 
@@ -79,13 +133,15 @@ After importing (or opening) R script with Inkscape:
 
 Inkscape builds command like:
 
-`Rscript script.R output.svg` which is executed by the system. At that time your script creates `args` variable where keeps the name of the output. That name is next passed to `ggsave` and your `plot` is saved there. At the end Inkscape loads the output into canvas. Easy !
+`Rscript script.R output.svg` which is executed by the system. At that time your script creates `args` variable where keeps the name of the output file. That name is then passed to `ggsave` and your `plot` is saved there. At the end Inkscape loads the output into canvas. Easy !
 
 When using `Import` a popup will show:
 
 ![](images/Capture-import.PNG)
 
 The same logic applies to running Python scripts.
+
+When blending `R` with `Python` it becomes bit more complex.
 
 # Examples
 
@@ -219,7 +275,6 @@ Example from script `koch.py` showing `matplotlib` in action.
 
 
 ```
-
 #!/usr/bin/env python
 import sys
 # start of your script

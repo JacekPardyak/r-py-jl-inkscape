@@ -10,6 +10,6 @@
         <filetypetooltip>Python</filetypetooltip>  
     </input>
     <script>
-        <command location="inx" interpreter="python">py_import_windows.py</command>
+        <command location="inx" interpreter="python">py_import.py</command>
     </script>
 </inkscape-extension>
