@@ -6,13 +6,11 @@ robjects.r('''
 # Your R code starts here
 library(tidyverse)
 plot_and_save <- function(x) {
-  iris %>%
-    ggplot() +
-    aes(x = Petal.Length,
-        y = Petal.Width,
-        colour = Species) +
-    geom_point()
-
+mtcars %>% ggplot() +
+  aes(x=wt, y=mpg, col=factor(cyl)) +
+  geom_point() +
+  geom_smooth(aes(group = cyl),
+                      method = 'lm')
 # Your R code ends here
 ggsave(x)
     }
