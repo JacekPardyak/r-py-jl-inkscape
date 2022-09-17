@@ -6,7 +6,7 @@ world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
 world.plot()
 #plt.savefig(sys.argv[1], format='svg', dpi=1200)
 plt.savefig("test.svg", format='svg', dpi=1200)
-
+%pip install geopandas
 #import sys
 # start of your script
 #import matplotlib.pyplot as plt
