@@ -16,7 +16,7 @@ iris %>%
 
 # Your code ends here
 #ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
-ggsave(filename = 'test.svg')
+ggsave(filename = 'test3.svg')
         
          ''')
         

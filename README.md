@@ -292,6 +292,8 @@ fig.savefig(sys.argv[1], format='svg', dpi=1200)
 
 - when using `reticulate` you might need to specify `RETICULATE_MINICONDA_PATH` like `Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')`
 
+- In Linux your `python` interpreter could be `python3` in the file `py_import_linux.py`
+
 # References
 
 https://inkscape.gitlab.io/extensions/documentation/tutorial/my-first-import-extension.html
