@@ -6,8 +6,7 @@ These extensions offer many more possibilities compared to the existing e.g. `Ex
 
 # Requirements
 
-R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely you have your own executable which need to specified
-I'm using `reticulate` 
+R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted.It is very likely that you have your own executable that needs to be specified.
 
 # Extension set up
 
@@ -32,27 +31,19 @@ should be copied to the User Extensions directory which is listed at `Edit`>`Pre
 In place of 
 
 ```
-...
        command.call('python', input_file, output_file)
-...       
 ```
 
 in Linux you might need to put:
 
 ```
-...
        command.call('python3', input_file, output_file)
-...       
 ```
 
 or in Windows:
 
 ```
-...
         command.call('C:\\Users\\jacek\\AppData\\Local\\R-MINI~1\\envs\\r-reticulate\\python.exe', input_file, output_file)
-
-...
-
 ```
 
 It may happen that in the file extension `py import.inx` you have to modify the path to the executable file:
@@ -150,6 +141,30 @@ The same logic applies to running Python scripts.
 When blending `R` with `Python` it becomes bit more complex.
 
 # Examples
+
+## Inkscape logo
+
+```
+#!/usr/bin/env Rscript
+# Your code starts here
+if(! require("devtools") ) install.packages("devtools")
+if(! require("inkscaper") ) devtools::install_github("JacekPardyak/inkscaper")
+library(tidyverse)
+library(sf)
+'https://upload.wikimedia.org/wikipedia/commons/a/a2/Inkscape_logo_%282-colour%29.svg' %>%
+  inx_svg2sf() %>%
+  mutate(colour = rainbow(nrow(.))) %>%
+  ggplot() +
+  geom_sf(aes(colour = colour), size = 2) +
+  scale_colour_identity() +
+  theme_light()
+
+# Your code ends here
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
+
+```
+
+![](images/Capture-inkscape.PNG)
 
 ## Iris
 
@@ -382,8 +397,6 @@ fig.savefig(sys.argv[1], format='svg', dpi=1200)
 - when using `reticulate` don't override `r` variable reserved for `R` environment
 
 - when using `reticulate` you might need to specify `RETICULATE_MINICONDA_PATH` like this `Sys.setenv(RETICULATE_MINICONDA_PATH = 'C:/Users/Public/r-miniconda')`
-
-- In Linux your `python` interpreter could be `python3` in the file `py_import_linux.py`
 
 # References
 

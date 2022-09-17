@@ -379,8 +379,8 @@ blend the two languages.</p>
 <h1>Requirements</h1>
 <p>R or Python and Inkscape should be installed on the platform. On
 Windows Inkscape come with own Python installation but installation of
-new packages there is restricted. It is very likely you have your own
-executable which need to specified I’m using <code>reticulate</code></p>
+new packages there is restricted.It is very likely that you have your
+own executable that needs to be specified.</p>
 </div>
 <div id="extension-set-up" class="section level1">
 <h1>Extension set up</h1>
@@ -408,19 +408,11 @@ system command responsible for executing <code>Python</code>
 script.</p></li>
 </ol>
 <p>In place of</p>
-<pre><code>...
-       command.call(&#39;python&#39;, input_file, output_file)
-...       </code></pre>
+<pre><code>       command.call(&#39;python&#39;, input_file, output_file)</code></pre>
 <p>in Linux you might need to put:</p>
-<pre><code>...
-       command.call(&#39;python3&#39;, input_file, output_file)
-...       </code></pre>
+<pre><code>       command.call(&#39;python3&#39;, input_file, output_file)</code></pre>
 <p>or in Windows:</p>
-<pre><code>...
-        command.call(&#39;C:\\Users\\jacek\\AppData\\Local\\R-MINI~1\\envs\\r-reticulate\\python.exe&#39;, input_file, output_file)
-
-...
-</code></pre>
+<pre><code>        command.call(&#39;C:\\Users\\jacek\\AppData\\Local\\R-MINI~1\\envs\\r-reticulate\\python.exe&#39;, input_file, output_file)</code></pre>
 <p>It may happen that in the file extension <code>py import.inx</code>
 you have to modify the path to the executable file:</p>
 <pre><code>    &lt;dependency type=&quot;executable&quot; location=&quot;path&quot;&gt;python3&lt;/dependency&gt;</code></pre>
