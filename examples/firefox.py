@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import geopandas
 world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
 world.plot()
+<<<<<<< HEAD
 #plt.savefig(sys.argv[1], format='svg', dpi=1200)
 plt.savefig("test.svg", format='svg', dpi=1200)
 %pip install geopandas
@@ -27,3 +28,6 @@ plt.savefig("test.svg", format='svg', dpi=1200)
 #plt.show()
 # end of your script
 #fig.savefig(sys.argv[1], format='svg', dpi=1200)
+=======
+plt.savefig(sys.argv[1], format='svg', dpi=1200)
+>>>>>>> 952bb5dce072aeca164a287c68a706f19a75ee19
