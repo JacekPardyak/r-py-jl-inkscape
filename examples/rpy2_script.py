@@ -16,14 +16,6 @@ ggsave(x)
     }
 ''')
 
-<<<<<<< HEAD
-# Your code ends here
-#ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
-ggsave(filename = 'test3.svg')
-        
-         ''')
-=======
 plot_and_save_r = robjects.globalenv['plot_and_save']
 plot_and_save_r(sys.argv[1])
->>>>>>> a77d0f7dca832376a60a18ca9ddd57d978819915
-        
+ 
