@@ -38,7 +38,7 @@ node [shape = box, fontname = Helvetica]
   Juliana [shape = box, fontname = Helvetica, style = filled, fillcolor = orange]
   Beatrix [shape = box, fontname = Helvetica, style = filled, fillcolor = orange]
   'Willem-Alexander' [shape = box, fontname = Helvetica, style = filled, fillcolor = orange]
-  'Catharina-Amalia' [shape = box, fontname = Helvetica, fontcolor = orange]
+  'Catharina-Amalia' [shape = box, fontname = Helvetica, style=dotted]
 
   # node as circle
   node [shape = circle, fixedsize = true, width = 0.1, fontcolor = white,  fontsize = 1] // sets as circles
@@ -52,7 +52,8 @@ node [shape = box, fontname = Helvetica]
   Wilhelmina -- 4  ; 'Hendrik van Mecklenburg-Schwerin' -- 4 ; 4 -- Juliana
   Juliana	-- 3     ; 'Bernhard van Lippe-Biesterfeld' -- 3 ; 3 -- Beatrix;
   Beatrix	-- 2     ; 'Claus van Amsberg' -- 2    ; 2 -- 'Willem-Alexander' ;
-  'Máxima Zorreguieta' -- 1      ; 'Willem-Alexander' -- 1 ; 1 -- 'Catharina-Amalia';
+  'Máxima Zorreguieta' -- 1      ; 'Willem-Alexander' -- 1 ; 
+  1 -- 'Catharina-Amalia' [style=dotted] ;
   }
 
     }
