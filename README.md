@@ -6,7 +6,7 @@ These extensions offer many more possibilities compared to the existing e.g. `Ex
 
 # Requirements
 
-R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted.It is very likely that you have your own executable that needs to be specified.
+R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely that you have your own executable that needs to be specified.
 
 # Extension set up
 
@@ -55,6 +55,20 @@ It may happen that in the file extension `py import.inx` you have to modify the 
 # R scripts
 
 In order for the script to run correctly, it must meet the following convention:
+
+- when using basic `plot()` function
+
+```
+#!/usr/bin/env Rscript
+svg(filename = commandArgs(trailingOnly = TRUE)[1])
+
+<-- Your code goes here -->
+
+dev.off() 
+
+```
+
+- when using `ggplot()` function
 
 ```
 #!/usr/bin/env Rscript
@@ -142,29 +156,58 @@ When blending `R` with `Python` it becomes bit more complex.
 
 # Examples
 
-## Inkscape logo
+## plot() cheatsheet
+
+This example comes from https://r-graph-gallery.com/6-graph-parameters-reminder.html and use basic R `plot()` function:
 
 ```
 #!/usr/bin/env Rscript
-# Your code starts here
-if(! require("devtools") ) install.packages("devtools")
-if(! require("inkscaper") ) devtools::install_github("JacekPardyak/inkscaper")
-library(tidyverse)
-library(sf)
-'https://upload.wikimedia.org/wikipedia/commons/a/a2/Inkscape_logo_%282-colour%29.svg' %>%
-  inx_svg2sf() %>%
-  mutate(colour = rainbow(nrow(.))) %>%
-  ggplot() +
-  geom_sf(aes(colour = colour), size = 2) +
-  scale_colour_identity() +
-  theme_light()
 
-# Your code ends here
-ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
+# SVG graphics device
+svg(filename = commandArgs(trailingOnly = TRUE)[1])
+# initialization
+par(mar=c(3,3,3,3))
+num <- 0 ; 
+num1 <- 0
+plot(0,0 , xlim=c(0,21) , ylim=c(0.5,6.5), col="white" , yaxt="n" , ylab="" , xlab="")
+
+#fill the graph
+for (i in seq(1,20)){
+  points(i,1 , pch=i , cex=3)
+  points(i,2 , col=i , pch=16 , cex=3)
+  points(i,3 , col="black" , pch=16 , cex=i*0.25)
+  
+  #lty
+  if(i %in% c(seq(1,18,3))){
+    num=num+1
+    points(c(i,i+2), c(4,4) , col="black" , lty=num , type="l" , lwd=2)
+    text(i+1.1 , 4.15 , num)
+  }
+  
+  #type and lwd 
+  if(i %in% c(seq(1,20,5))){
+    num1=num1+1
+    points(c(i,i+1,i+2,i+3), c(5,5,5,5) , col="black"  , type=c("p","l","b","o")[num1] , lwd=2)
+    text(i+1.1 , 5.2 , c("p","l","b","o")[num1] )
+    points(c(i,i+1,i+2,i+3), c(6,6,6,6) , col="black"  , type="l",  lwd=num1)
+    text(i+1.1 , 6.2 , num1 )
+    
+  }
+}
+
+#add axis
+axis(2, at = c(1,2,3,4,5,6), labels = c("pch" , "col" , "cex" , "lty", "type" , "lwd" ), 
+     tick = TRUE, col = "black", las = 1, cex.axis = 0.8)
+# Close the graphics device
+dev.off()
 
 ```
 
-![](images/Capture-inkscape.PNG)
+
+after import you should see in Inkscape:
+
+![](images/Capture-cheatsheet.PNG)
+
 
 ## Iris
 
@@ -384,11 +427,31 @@ fig.savefig(sys.argv[1], format='svg', dpi=1200)
 ```
 ![](images/Capture.PNG)
 
+## Inkscape logo
+
+```
+#!/usr/bin/env Rscript
+# Your code starts here
+if(! require("devtools") ) install.packages("devtools")
+if(! require("inkscaper") ) devtools::install_github("JacekPardyak/inkscaper")
+library(tidyverse)
+library(sf)
+'https://upload.wikimedia.org/wikipedia/commons/a/a2/Inkscape_logo_%282-colour%29.svg' %>%
+  inx_svg2sf() %>%
+  mutate(colour = rainbow(nrow(.))) %>%
+  ggplot() +
+  geom_sf(aes(colour = colour), size = 2) +
+  scale_colour_identity() +
+  theme_light()
+
+# Your code ends here
+ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
+
+```
+
+![](images/Capture-inkscape.PNG)
+
 # Notes
-
-- `ggsave` saves a ggplot (or other grid object) with sensible defaults as SVG
-
-- method `plot()` in `R` doesn't work
 
 - `R` working directory is extensions directory. To read data from file you need to specify full path or change working directory with `setwd()`
 

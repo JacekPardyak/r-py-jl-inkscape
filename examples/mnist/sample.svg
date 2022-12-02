@@ -27,14 +27,14 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="6.0435466"
-     inkscape:cx="74.625056"
-     inkscape:cy="45.006686"
-     inkscape:window-width="2048"
-     inkscape:window-height="1914"
-     inkscape:window-x="5669"
-     inkscape:window-y="53"
-     inkscape:window-maximized="0"
+     inkscape:zoom="3.0217733"
+     inkscape:cx="62.876987"
+     inkscape:cy="31.769425"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
      id="defs2" />
@@ -51,7 +51,7 @@
        y="0" />
     <path
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-       d="m 10.97925,15.862036 c 11.172613,-12.5911024 13.777534,8.529903 3.621566,8.2354 C 4.4448489,23.802933 10.581051,6.9858489 14.398041,1.6970573"
+       d="M 23.894198,26.018876 C -10.551409,27.262091 13.987032,20.013993 18.978764,12.670992 23.970496,5.3279922 22.313951,0.1562505 7.787339,5.3307535"
        id="path1013"
        sodipodi:nodetypes="czc" />
   </g>
