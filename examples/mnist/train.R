@@ -101,9 +101,8 @@ which.max(predictions[10, ]) - 1
 
 train_images %>% .[10,,,1] %>% as.raster(max = 1) %>% plot()
 
-"""# Extra 
-Myself created samples for prediction
-"""
+# Extra 
+# Myself created samples for prediction
 
 install.packages('raster')
 
@@ -136,10 +135,9 @@ model %>% predict(y) %>% t() %>% as_tibble() %>% rename(probability = V1) %>%
 
 y[1,,,1] %>% as.raster() %>% plot()
 
-"""# References:
-- https://www.manning.com/books/deep-learning-with-r
+# References:
+# - https://www.manning.com/books/deep-learning-with-r
 
-- https://towardsdatascience.com/introduction-to-deep-learning-with-keras-in-r-81bafd903a7a#c794
+# - https://towardsdatascience.com/introduction-to-deep-learning-with-keras-in-r-81bafd903a7a#c794
 
-- https://tensorflow.rstudio.com/
-"""
+# - https://tensorflow.rstudio.com/

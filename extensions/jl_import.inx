@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension">
+    <name>jl_import</name>
+    <id>org.inkscape.input.jl</id>
+    <dependency type="executable" location="path">julia</dependency>
+    <input>
+        <extension>.jl</extension>
+        <mimetype>text/plain</mimetype>
+        <filetypename>julia(*.jl)</filetypename>
+        <filetypetooltip>julia</filetypetooltip>  
+    </input>
+    <script>
+        <command location="inx" interpreter="python">jl_import.py</command>
+    </script>
+</inkscape-extension>
