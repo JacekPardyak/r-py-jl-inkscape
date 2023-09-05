@@ -1,6 +1,46 @@
-#!/usr/bin/env julia
-import Pkg
-Pkg.add(["ZipFile", "Plots", "Shapefile"])
+---
+title: "World maps"
+format: html
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+
+```{julia}
+#| label: fig-parametric
+#| fig-cap: "Parametric Plots"
+
+using Plots
+
+plot(sin, 
+     x->sin(2x), 
+     0, 
+     2π, 
+     leg=false, 
+     fill=(0,:lavender))
+```
+
+```{julia}
+#| label: fig-plots
+#| fig-cap: "Multiple Plots"
+#| fig-subcap:
+#|   - "Plot 1"
+#|   - "Plot 2"
+#| layout-ncol: 2
+
+using Plots
+display(plot(sin, x -> sin(2x), 0, 2))
+display(plot(x -> sin(4x), y -> sin(5y), 0, 2))
+```
+
+```{julia}
+#| label: fig-map-jl
+#| fig-cap: "Map of the world by Julia"
+
+#import Pkg
+#Pkg.add(["ZipFile", "Plots", "Shapefile"])
 using Downloads: download
 using ZipFile
 using Plots
@@ -41,4 +81,27 @@ close(archive)
 shape = joinpath("./", archive.files[4].name)
 countries = Shapefile.Table(shape)
 countries |> x -> plot(x, axis = ([], false))
-savefig(ARGS[1])
+
+```
+
+```{r}
+#| label: fig-map-r
+#| fig-cap: "Map of the world by R"
+
+library(sf)
+library(ggplot2)
+
+df = st_read("CNTR_RG_60M_2020_3035.shp")
+ggplot() +
+  geom_sf(data = df)
+```
+
+```{python}
+#| label: fig-map-py
+#| fig-cap: "Map of the world by Python"
+
+import geopandas
+df = geopandas.read_file('CNTR_RG_60M_2020_3035.shp')
+df.plot()
+
+```

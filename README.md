@@ -1,8 +1,8 @@
 # Julia, R & Python Import Extensions for Inkscape
 
-Inkscape extensions for executing `jl`/`r`/`py` scripts from Inkscape to represent the resulting `jl`/`r`/`py` plot inside the Inkscape canvas.
+Inkscape extensions for executing `jl`/`r`/`py` scripts from Inkscape to display the resulting `jl`/`r`/`py` plot ins the Inkscape workspace.
 
-These extensions offer many more possibilities compared to the existing e.g. `Extensions`>` Render`> `Function Plotter`. You can use your own data, libraries, functions, ... whatever fits into a Julia, R or Python script. You can even blend any two or all three languages. 
+These extensions offer many more possibilities compared to the existing e.g. `Extensions`>` Render`> `Function Plotter`. You can use your own data, libraries, functions, ... whatever fits into a Julia, R or Python script. You can even blend any two or all three languages together. 
 
 # Requirements
 
@@ -50,7 +50,7 @@ or in Windows:
         command.call('C:\\Users\\jacek\\AppData\\Local\\R-MINI~1\\envs\\r-reticulate\\python.exe', input_file, output_file)
 ```
 
-It may happen that in the file extension `py import.inx` you have to modify the path to the executable file:
+It may happen that in the file extension `py_import.inx` you have to modify the path to the executable file:
 
 ```
     <dependency type="executable" location="path">python3</dependency>
