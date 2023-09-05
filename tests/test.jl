@@ -3,14 +3,14 @@ Pkg.add(["Shapefile", "CairoMakie", "AlgebraOfGraphics", "GBIF", "SimpleSDMLayer
 using Shapefile              # Import and manipulate raster data (e.g. .shp files)
 using CairoMakie             # Plotting utilities 
 using AlgebraOfGraphics      # Plotting utilities
-using DataFrames             # Create and manipulate DataFrame objects 
-using CSV                    # Import and process .csv files 
+#using DataFrames             # Create and manipulate DataFrame objects 
+#using CSV                    # Import and process .csv files 
 using GBIF                   # Plotting
-using SimpleSDMLayers        # Plotting 
-using Colors                 # Plotting
+#using SimpleSDMLayers        # Plotting 
+#using Colors                 # Plotting
 
 # Downloaded from: https://geoportal.icpac.net/layers/geonode%3Aafr_g2014_2013_0
-table = Shapefile.Table("afr_g2014_2013_0.shp");
+table = Shapefile.Table("data/PRT_adm0.shp");
 
 # Set map theme for AlgebraOfGraphics.jl
 set_aog_theme!() 
@@ -24,7 +24,7 @@ update_theme!(
         ytickcolor =:black
        )
 );
-# Step 1: Create a raster layer with the African shapefile (.shp)
+# Step 1: Create a raster layer with the Portugal shapefile (.shp)
 layer_map = geodata(table) * 
         mapping(
             :geometry
@@ -40,6 +40,6 @@ layer_map = geodata(table) *
 # Print Africa map
 draw(layer_map)
 
-savefig("out.svg")
+#savefig("out.svg")
 
 # https://statsforscaredecologists.netlify.app/posts/001_basic_map_julia/

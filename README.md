@@ -1,18 +1,22 @@
-# R & Python Import Extensions for Inkscape
+# Julia, R & Python Import Extensions for Inkscape
 
-Inkscape extensions for executing R/Py scripts from Inkscape to represent the resulting R/Py plot inside the Inkscape canvas.
+Inkscape extensions for executing `jl`/`r`/`py` scripts from Inkscape to represent the resulting `jl`/`r`/`py` plot inside the Inkscape canvas.
 
-These extensions offer many more possibilities compared to the existing e.g. `Extensions`>` Render`> `Function Plotter`. You can use your own data, libraries, functions, ... whatever fits into an R or Python script. You can even blend the two languages. 
+These extensions offer many more possibilities compared to the existing e.g. `Extensions`>` Render`> `Function Plotter`. You can use your own data, libraries, functions, ... whatever fits into a Julia, R or Python script. You can even blend any two or all three languages. 
 
 # Requirements
 
-R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely that you have your own executable that needs to be specified.
+Julia, R or Python and Inkscape should be installed on the platform. On Windows Inkscape come with own Python installation but installation of new packages there is restricted. It is very likely that you have your own executable that needs to be specified.
 
 # Extension set up
 
-1. Make sure the `PATH` to` Rscript` is set in the Environment Variables of your system.
+1. Make sure the `PATH` to `julia`, `Rscript` or `python` is set in the Environment Variables of your system.
 
 2. Files from `extensions` folder of this repository:
+
+- `jl_import.inx`
+
+- `jl_import.py` 
 
 - `r_import.inx`
 
@@ -24,7 +28,7 @@ R or Python and Inkscape should be installed on the platform. On Windows Inkscap
 
 should be copied to the User Extensions directory which is listed at `Edit`>`Preferences`>`System` - `User Extensions:` in Inkscape.
 
-3. Make sure `R` or `Python` packages from examples are installed 
+3. Make sure `Julia`, `R` or `Python` packages from examples are installed 
 
 4. When using `Python` it's very likely that in the extension file `py_import.py` you need to specify right system command responsible for executing `Python` script.
 
@@ -51,6 +55,10 @@ It may happen that in the file extension `py import.inx` you have to modify the 
 ```
     <dependency type="executable" location="path">python3</dependency>
 ```
+
+# Julia scripts
+
+`Plots` package does the job in the examples.
 
 # R scripts
 
@@ -450,6 +458,10 @@ ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
 ```
 
 ![](images/Capture-inkscape.PNG)
+
+## Julia
+
+![](images/Capture-julia.PNG)
 
 # Notes
 
