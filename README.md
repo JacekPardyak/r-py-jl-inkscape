@@ -100,7 +100,7 @@ fig.savefig(sys.argv[1], format='svg', dpi=1200)
 
 ```
 
-# R scripts containing Python scipts
+# R scripts containing Python scripts
 
 In order for the R script containing Python code to run correctly, it must meet the following convention:
 
@@ -122,7 +122,7 @@ exit
 
 To learn more check the `examples`.
 
-# Python scripts containing R scipts
+# Python scripts containing R scripts
 
 In order for the Python script containing R code to run correctly, it must meet the following convention:
 
@@ -459,7 +459,20 @@ ggsave(filename = commandArgs(trailingOnly = TRUE)[1])
 
 ![](images/Capture-inkscape.PNG)
 
-## Julia
+## Map by Julia
+
+```
+using Plots, GeoJSON, DataFrames
+url = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
+df = download(url * "ne_50m_land.geojson") |> GeoJSON.read |> DataFrame
+df.geometry |> plot
+savefig(ARGS[1])
+```
+
+
+![](images/Capture-julia-map.PNG)
+
+eventually
 
 ![](images/Capture-julia.PNG)
 

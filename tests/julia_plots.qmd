@@ -53,3 +53,35 @@ f(x, y) = sin(x) + cos(y)
 surface(0:0.1:10, 0:0.1:10, f)
 ```
 
+```{julia}
+#| label: fig-map-nl
+#| fig-cap: "Surface Plots"
+#| 
+using Plots
+
+f(x, y) = sin(x) + cos(y)
+
+surface(0:0.1:10, 0:0.1:10, f)
+```
+
+```{julia, eval = F}
+import Pkg; Pkg.add(["GeoJSON", "HTTP", "Makie"])
+using HTTP, GeoJSON, DataFrames
+using CairoMakie
+using Makie.GeometryBasics
+
+resp = "https://service.pdok.nl/cbs/gebiedsindelingen/2023/wfs/v1_0?request=GetFeature&service=WFS&version=2.0.0&typeName=gemeente_gegeneraliseerd&outputFormat=json" |> HTTP.get 
+fc = resp.body |> GeoJSON.read
+fig = Figure()
+ax = Axis(fig[1, 1])
+poly!(ax, fc, color = colorant"gray50")
+fig
+```
+```{julia}
+using Plots, GeoJSON, DataFrames
+
+url = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
+df = download(url * "ne_50m_land.geojson") |> GeoJSON.read |> DataFrame
+df.geometry |> plot
+```
+
