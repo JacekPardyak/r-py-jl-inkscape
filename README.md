@@ -1,6 +1,6 @@
 # Julia, R & Python Import Extensions for Inkscape
 
-Inkscape extensions for executing `jl`/`r`/`py` scripts from Inkscape to display the resulting `jl`/`r`/`py` plot ins the Inkscape workspace.
+Inkscape extensions for executing `jl`/`r`/`py` scripts from Inkscape to display the resulting `jl`/`r`/`py` plot in the Inkscape workspace.
 
 These extensions offer many more possibilities compared to the existing e.g. `Extensions`>` Render`> `Function Plotter`. You can use your own data, libraries, functions, ... whatever fits into a Julia, R or Python script. You can even blend any two or all three languages together. 
 
