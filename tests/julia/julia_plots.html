@@ -216,45 +216,188 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">add</span>(<span class="st">"GeoMakie"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Makie</span>, <span class="bu">CairoMakie</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">GeoMakie</span>, <span class="bu">GeoMakie.GeoJSON</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">add</span>([<span class="st">"GeoJSON"</span>, <span class="st">"Pipe"</span>])</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span>, <span class="bu">GeoJSON</span>, <span class="bu">DataFrames</span>, <span class="bu">Pipe</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="pp">@pipe</span> <span class="st">"https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson"</span> <span class="op">|&gt;</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download</span>(_) <span class="op">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  GeoJSON.<span class="fu">read</span>(_) <span class="op">|&gt;</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(_) <span class="op">|&gt;</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  _.geometry <span class="op">|&gt;</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="julia_plots_files/figure-html/unnamed-chunk-7-J1.png" class="img-fluid" width="300"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">Pkg; Pkg</span>.<span class="fu">add</span>([<span class="st">"GeoJSON"</span>, <span class="st">"Pipe"</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span>, <span class="bu">GeoJSON</span>, <span class="bu">DataFrames</span>, <span class="bu">Pipe</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="pp">@pipe</span> <span class="st">"https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/CNTR_BN_01M_2020_3035.geojson"</span> <span class="op">|&gt;</span> <span class="fu">download</span>(_) <span class="op">|&gt;</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  GeoJSON.<span class="fu">read</span>(_) <span class="op">|&gt;</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DataFrame</span>(_) <span class="op">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="op">:</span>CNTR_CODE <span class="op">=&gt;</span> n <span class="op">-&gt;</span> n <span class="op">==</span> <span class="st">"PT"</span>, _) <span class="op">|&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  _.geometry <span class="op">|&gt;</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(_, ylimits<span class="op">=</span>(<span class="fl">1700000</span>, <span class="fl">2300000</span>), xlimits<span class="op">=</span>(<span class="fl">2600000</span>, <span class="fl">3000000</span>), aspect_ratio <span class="op">=</span> <span class="op">:</span>equal,  color<span class="op">=:</span>royalblue1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="julia_plots_files/figure-html/unnamed-chunk-8-J1.png" class="img-fluid" width="300"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Hypocycloid </span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">## Lets recreate the gif on the Wiki (https://en.wikipedia.org/wiki/Hypocycloid)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Plots</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="fl">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>"https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"</code></pre>
+<pre><code>1</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fc <span class="op">=</span> <span class="fu">download</span>(url <span class="op">*</span> <span class="st">"ne_50m_land.geojson"</span>) <span class="op">|&gt;</span> GeoJSON.read</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="fl">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>FeatureCollection with 1420 Features</code></pre>
+<pre><code>3</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> <span class="fu">Figure</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>        resolution <span class="op">=</span> (<span class="fl">1920</span>, <span class="fl">1080</span>), </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        fontsize <span class="op">=</span> <span class="fl">50</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        figure_padding <span class="op">=</span> (<span class="fl">100</span>, <span class="fl">100</span>, <span class="fl">100</span>, <span class="fl">100</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Axis with 0 plots:</code></pre>
+<pre><code>100</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">poly!</span>(fc, color <span class="op">=</span> colorant<span class="st">"gray50"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>th <span class="op">=</span> <span class="fu">Array</span>(<span class="fl">0</span><span class="op">:</span><span class="fl">2</span><span class="op">*</span><span class="cn">pi</span><span class="op">/</span><span class="fl">100</span><span class="op">:</span><span class="fl">2</span><span class="op">*</span><span class="cn">pi</span><span class="op">+</span><span class="fl">2</span><span class="op">*</span><span class="cn">pi</span><span class="op">/</span><span class="fl">100</span>) <span class="co"># theta from 0 to 2pi ( + a little extra)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>Poly{Tuple{Vector{GeometryBasics.MultiPolygon{2, Float32, GeometryBasics.Polygon{2, Float32, Point{2, Float32}, GeometryBasics.LineString{2, Float32, Point{2, Float32}, Base.ReinterpretArray{GeometryBasics.Line{2, Float32}, 1, Tuple{Point{2, Float32}, Point{2, Float32}}, GeometryBasics.TupleView{Tuple{Point{2, Float32}, Point{2, Float32}}, 2, 1, Vector{Point{2, Float32}}}, false}}, Vector{GeometryBasics.LineString{2, Float32, Point{2, Float32}, Base.ReinterpretArray{GeometryBasics.Line{2, Float32}, 1, Tuple{Point{2, Float32}, Point{2, Float32}}, GeometryBasics.TupleView{Tuple{Point{2, Float32}, Point{2, Float32}}, 2, 1, Vector{Point{2, Float32}}}, false}}}}, Vector{GeometryBasics.Polygon{2, Float32, Point{2, Float32}, GeometryBasics.LineString{2, Float32, Point{2, Float32}, Base.ReinterpretArray{GeometryBasics.Line{2, Float32}, 1, Tuple{Point{2, Float32}, Point{2, Float32}}, GeometryBasics.TupleView{Tuple{Point{2, Float32}, Point{2, Float32}}, 2, 1, Vector{Point{2, Float32}}}, false}}, Vector{GeometryBasics.LineString{2, Float32, Point{2, Float32}, Base.ReinterpretArray{GeometryBasics.Line{2, Float32}, 1, Tuple{Point{2, Float32}, Point{2, Float32}}, GeometryBasics.TupleView{Tuple{Point{2, Float32}, Point{2, Float32}}, 2, 1, Vector{Point{2, Float32}}}, false}}}}}}}}}</code></pre>
+<pre><code>101-element Vector{Float64}:
+ 0.0
+ 0.06283185307179587
+ 0.12566370614359174
+ 0.1884955592153876
+ 0.25132741228718347
+ 0.3141592653589793
+ 0.3769911184307752
+ 0.4398229715025711
+ 0.5026548245743669
+ 0.5654866776461628
+ ⋮
+ 5.7805304826052195
+ 5.843362335677016
+ 5.906194188748811
+ 5.969026041820608
+ 6.031857894892403
+ 6.094689747964199
+ 6.157521601035995
+ 6.220353454107791
+ 6.283185307179587</code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">r*k*cos</span>.(th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>101-element Vector{Float64}:
+ 3.0
+ 2.9940801852848145
+ 2.9763441039434335
+ 2.946861752186066
+ 2.9057494833858932
+ 2.8531695488854605
+ 2.7893294576647545
+ 2.7144811573980583
+ 2.628920040131591
+ 2.532983776506045
+ ⋮
+ 2.628920040131591
+ 2.714481157398059
+ 2.7893294576647545
+ 2.8531695488854614
+ 2.9057494833858937
+ 2.946861752186066
+ 2.9763441039434335
+ 2.9940801852848145
+ 3.0</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> <span class="fu">r*k*sin</span>.(th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>101-element Vector{Float64}:
+  0.0
+  0.18837155858794014
+  0.3759997006929128
+  0.5621439437571739
+  0.7460696614945643
+  0.9270509831248421
+  1.104373658054034
+  1.2773378746952182
+  1.445261022305146
+  1.60748038493699
+  ⋮
+ -1.445261022305146
+ -1.2773378746952166
+ -1.1043736580540335
+ -0.9270509831248404
+ -0.7460696614945634
+ -0.562143943757174
+ -0.37599970069291133
+ -0.1883715585879398
+  1.929747179611964e-15</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>anim <span class="op">=</span> <span class="pp">@animate</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># initialize plot with 4 series</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    plt<span class="op">=</span><span class="fu">plot</span>(<span class="fl">5</span>,xlim<span class="op">=</span>(<span class="op">-</span><span class="fl">4</span>,<span class="fl">4</span>),ylim<span class="op">=</span>(<span class="op">-</span><span class="fl">4</span>,<span class="fl">4</span>), c<span class="op">=:</span>red, aspect_ratio<span class="op">=</span><span class="fl">1</span>,legend<span class="op">=</span><span class="cn">false</span>, framestyle<span class="op">=:</span>origin)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># big circle</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot!</span>(plt, X,Y, c<span class="op">=:</span>blue, legend<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> th[<span class="fl">1</span><span class="op">:</span>i]</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the hypocycloid</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">r*</span>(k<span class="op">-</span><span class="fl">1</span>)<span class="fu">*cos</span>.(t) <span class="op">+</span> <span class="fu">r*cos</span>.((k<span class="op">-</span><span class="fl">1</span>)<span class="op">*</span>t)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="fu">r*</span>(k<span class="op">-</span><span class="fl">1</span>)<span class="fu">*sin</span>.(t) <span class="op">-</span> <span class="fu">r*sin</span>.((k<span class="op">-</span><span class="fl">1</span>)<span class="op">*</span>t)</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot!</span>(x,y, c<span class="op">=:</span>red) </span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># the small circle</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    xc <span class="op">=</span> <span class="fu">r*</span>(k<span class="op">-</span><span class="fl">1</span>)<span class="fu">*cos</span>(t[<span class="kw">end</span>]) <span class="op">.+</span> <span class="fu">r*cos</span>.(th)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    yc <span class="op">=</span> <span class="fu">r*</span>(k<span class="op">-</span><span class="fl">1</span>)<span class="fu">*sin</span>(t[<span class="kw">end</span>]) <span class="op">.+</span> <span class="fu">r*sin</span>.(th)</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot!</span>(xc,yc,c<span class="op">=:</span>black)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># line segment</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    xl <span class="op">=</span> <span class="fu">transpose</span>([<span class="fu">r*</span>(k<span class="op">-</span><span class="fl">1</span>)<span class="fu">*cos</span>(t[<span class="kw">end</span>]) x[<span class="kw">end</span>]])</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    yl <span class="op">=</span> <span class="fu">transpose</span>([<span class="fu">r*</span>(k<span class="op">-</span><span class="fl">1</span>)<span class="fu">*sin</span>(t[<span class="kw">end</span>]) y[<span class="kw">end</span>]])</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot!</span>(xl,yl,markershape<span class="op">=:</span>circle,markersize<span class="op">=</span><span class="fl">4</span>,c<span class="op">=:</span>black)</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scatter!</span>([x[<span class="kw">end</span>]],[y[<span class="kw">end</span>]],c<span class="op">=:</span>red, markerstrokecolor<span class="op">=:</span>red)</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Animation("C:\\Users\\jacek\\AppData\\Local\\Temp\\jl_QKunXq", ["000001.png", "000002.png", "000003.png", "000004.png", "000005.png", "000006.png", "000007.png", "000008.png", "000009.png", "000010.png"  …  "000091.png", "000092.png", "000093.png", "000094.png", "000095.png", "000096.png", "000097.png", "000098.png", "000099.png", "000100.png"])</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gif</span>(anim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Plots.AnimatedGif("C:\\Users\\jacek\\AppData\\Local\\Temp\\jl_oHI3unKlkR.gif")</code></pre>
+</div>
 </div>
 </section>
 

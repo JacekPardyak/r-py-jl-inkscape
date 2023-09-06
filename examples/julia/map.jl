@@ -1,44 +1,9 @@
 #!/usr/bin/env julia
-import Pkg
-Pkg.add(["ZipFile", "Plots", "Shapefile"])
-using Downloads: download
-using ZipFile
-using Plots
-using Shapefile
-# dowload the data
-url = "https://gisco-services.ec.europa.eu/distribution/v2/countries/download/ref-countries-2020-60m.shp.zip"
-zip = download(url, "./countries.zip")
-# unzip first archive
-archive = ZipFile.Reader(zip)
-for f in archive.files
-    println(f.name)
-    fullFilePath = joinpath("./", f.name)
-    if endswith(f.name,"/")
-        mkdir(fullFilePath)
-    else
-        out =  open(fullFilePath,"w")
-        write(out,read(f,String))
-        close(out) 
-    end
-end
-# unzip second - nested - archive
-zip = joinpath("./", archive.files[1].name)
-archive = ZipFile.Reader(zip)
-
-for f in archive.files
-    println(f.name)
-    fullFilePath = joinpath("./", f.name)
-    if endswith(f.name,"/")
-        mkdir(fullFilePath)
-    else
-        out =  open(fullFilePath,"w")
-        write(out,read(f,String))
-        close(out) 
-    end
-end
-close(archive)
-# read shapefile and plot it
-shape = joinpath("./", archive.files[4].name)
-countries = Shapefile.Table(shape)
-countries |> x -> plot(x, axis = ([], false))
+using Plots, GeoJSON, DataFrames, Pipe
+@pipe "https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/CNTR_BN_01M_2020_3035.geojson" |> download(_) |> 
+  GeoJSON.read(_) |> 
+  DataFrame(_) |>
+  filter(:CNTR_CODE => n -> n == "PT", _) |>
+  _.geometry |> 
+  plot(_, ylimits=(1700000, 2300000), xlimits=(2600000, 3000000), aspect_ratio = :equal,  color=:royalblue1)
 savefig(ARGS[1])

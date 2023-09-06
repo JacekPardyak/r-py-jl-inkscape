@@ -470,11 +470,20 @@ savefig(ARGS[1])
 ```
 
 
-![](images/Capture-julia-map.PNG)
+![](images/Capture-julia-map1.PNG)
 
-eventually
+or
 
-![](images/Capture-julia.PNG)
+![](images/Capture-julia-map2.PNG)
+
+or
+
+![](images/Capture-julia-map0.PNG)
+
+## Wireframe in Julia
+
+![](images/Capture-julia-wireframe.PNG)
+
 
 # Notes
 

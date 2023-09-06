@@ -64,24 +64,83 @@ f(x, y) = sin(x) + cos(y)
 surface(0:0.1:10, 0:0.1:10, f)
 ```
 
-```{julia, eval = F}
-import Pkg; Pkg.add(["GeoJSON", "HTTP", "Makie"])
-using HTTP, GeoJSON, DataFrames
-using CairoMakie
-using Makie.GeometryBasics
+```{julia}
+using Plots
+Plots.gr() # wireframe not working with pyplot atm (https://github.com/JuliaPlots/Plots.jl/issues/1830)
 
-resp = "https://service.pdok.nl/cbs/gebiedsindelingen/2023/wfs/v1_0?request=GetFeature&service=WFS&version=2.0.0&typeName=gemeente_gegeneraliseerd&outputFormat=json" |> HTTP.get 
-fc = resp.body |> GeoJSON.read
-fig = Figure()
-ax = Axis(fig[1, 1])
-poly!(ax, fc, color = colorant"gray50")
-fig
+x=-1:0.1:1
+y=-1:0.1:1
+h(x,y)=x^2-y^2;
+
+wireframe(x,y,h)
+```
+
+
+```{julia}
+import Pkg; Pkg.add(["GeoJSON", "Pipe"])
+using Plots, GeoJSON, DataFrames, Pipe
+
+@pipe "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson" |> 
+  download(_) |> 
+  GeoJSON.read(_) |> 
+  DataFrame(_) |> 
+  _.geometry |> 
+  plot
+```
+
+```{julia}
+import Pkg; Pkg.add(["GeoJSON", "Pipe"])
+using Plots, GeoJSON, DataFrames, Pipe
+@pipe "https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/CNTR_BN_01M_2020_3035.geojson" |> download(_) |> 
+  GeoJSON.read(_) |> 
+  DataFrame(_) |>
+  filter(:CNTR_CODE => n -> n == "PT", _) |>
+  _.geometry |> 
+  plot(_, ylimits=(1700000, 2300000), xlimits=(2600000, 3000000), aspect_ratio = :equal,  color=:royalblue1)
 ```
 ```{julia}
-using Plots, GeoJSON, DataFrames
+## Hypocycloid 
 
-url = "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/"
-df = download(url * "ne_50m_land.geojson") |> GeoJSON.read |> DataFrame
-df.geometry |> plot
+## Lets recreate the gif on the Wiki (https://en.wikipedia.org/wiki/Hypocycloid)
+using Plots
+
+r = 1
+k = 3
+n = 100
+
+th = Array(0:2*pi/100:2*pi+2*pi/100) # theta from 0 to 2pi ( + a little extra)
+X = r*k*cos.(th)
+Y = r*k*sin.(th)
+
+
+anim = @animate for i in 1:n
+    
+    # initialize plot with 4 series
+    plt=plot(5,xlim=(-4,4),ylim=(-4,4), c=:red, aspect_ratio=1,legend=false, framestyle=:origin)
+    
+    # big circle
+    plot!(plt, X,Y, c=:blue, legend=false)
+    
+    t = th[1:i]
+    
+    # the hypocycloid
+    x = r*(k-1)*cos.(t) + r*cos.((k-1)*t)
+    y = r*(k-1)*sin.(t) - r*sin.((k-1)*t)
+    plot!(x,y, c=:red) 
+    
+    # the small circle
+    xc = r*(k-1)*cos(t[end]) .+ r*cos.(th)
+    yc = r*(k-1)*sin(t[end]) .+ r*sin.(th)
+    plot!(xc,yc,c=:black)
+    
+    # line segment
+    xl = transpose([r*(k-1)*cos(t[end]) x[end]])
+    yl = transpose([r*(k-1)*sin(t[end]) y[end]])
+    plot!(xl,yl,markershape=:circle,markersize=4,c=:black)
+    scatter!([x[end]],[y[end]],c=:red, markerstrokecolor=:red)
+    
+
+end
+gif(anim)
 ```
 
