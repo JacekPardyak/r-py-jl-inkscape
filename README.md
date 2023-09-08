@@ -58,7 +58,7 @@ It may happen that in the file extension `py_import.inx` you have to modify the 
 
 # Julia scripts
 
-`Plots` package does the job in the examples.
+`Plots` and `Luxor` packages do the job in the examples.
 
 # R scripts
 
